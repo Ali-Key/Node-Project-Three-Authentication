@@ -10,15 +10,6 @@ datasource db {
   url      = "file:./book.db"
 }
 
-model Owner {
-  id        Int         @id @default(autoincrement())
-  name      String
-  email     String      @unique
-  password  String
-  created   DateTime    @default(now())
-  updated   DateTime    @default(now())
-  bookstore BookStore[]
-}
 
 model BookStore {
   id       Int      @id @default(autoincrement())
@@ -52,6 +43,16 @@ model Book {
 
   author    Author    @relation(fields: [authorId], references: [id])
   bookstore BookStore @relation(fields: [bookstoreId], references: [id])
+}
+
+model Owner {
+  id        Int         @id @default(autoincrement())
+  name      String
+  email     String      @unique
+  password  String
+  created   DateTime    @default(now())
+  updated   DateTime    @default(now())
+  bookstore BookStore[]
 }
 
 

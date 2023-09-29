@@ -1,7 +1,7 @@
 // Create endpoints for authors, make sure to use the middleware to authenticate the token
 import express from 'express';
 import prisma from './lib/index.js';
-
+import authenticate from './middleware/authenticate.js'
 
 const router = express.Router();
 
@@ -42,7 +42,7 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-router.post("/",  async (req, res) => {
+router.post("/", authenticate,  async (req, res) => {
     try {
         
         const {name} = req.body;
@@ -64,7 +64,7 @@ router.post("/",  async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
     try {
         
         const { id } = req.params;
@@ -91,7 +91,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id',  async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
     try {
         
         const { id } = req.params;
