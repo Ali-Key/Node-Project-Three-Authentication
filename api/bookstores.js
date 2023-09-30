@@ -3,7 +3,12 @@ import express from 'express';
 import prisma from './lib/index.js';
 import authenticate from './middleware/authenticate.js';
 
+
+
+
 const router = express.Router();
+
+
 
 router.get("/", async (req, res) => {
     try {
@@ -42,14 +47,15 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/',authenticate,  async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
     try {
         
-        const { name, location} = req.body;
+        const { name,ownerId, location} = req.body;
 
-        const newBookStore = await prisma.bookstore.create({
+        const newBookStore = await prisma.bookStore.create({
             data: {
                 name, 
+                ownerId,
                 location,
             },
         });
@@ -65,7 +71,7 @@ router.post('/',authenticate,  async (req, res) => {
     }
 });
 
-router.put('/:id',authenticate,  async (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
     try {
         
         const {id} = req.params;
@@ -93,7 +99,7 @@ router.put('/:id',authenticate,  async (req, res) => {
     }
 })
 
-router.delete('/:id',authenticate, async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
     try {
         
         const {id} = req.params;

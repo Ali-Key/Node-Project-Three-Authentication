@@ -1,34 +1,29 @@
-import jwt from "jsonwebtoken";
+// set up token middleware here
+import jwt from 'jsonwebtoken'
 import "dotenv/config.js"
-const SECRET_KEY = 'secretkey123456'
+const SECRET_KEY = process.env.SECRET_KEY;
 
 const authenticate = (req, res, next) => {
-    const token = req.header.authorzation
-    if (!token) {
-        return res.status(401).json({
-            message: "Authentication failed - missing token"
-        })
+    const token = req.headers.authorization
+
+    if(!token) {
+        return res.status(401).json({status: 401, message: "Authentication failed - missing token"})
     }
 
-    console.log("toke", token);
+    console.log("token", token)
 
-    const tokenwithoutBearer = token.split(" ")[1];
+    const tokenWithoutBearar = token.split(" ")[1]
 
-
-    // verify the token
-    jwt.verify(tokenwithoutBearer, SECRET_KEY, (error, decoded) => {
-       
-       
-        if (error) {
-            return res.status(401).json({
-                message: "Authentication failed - invalid token"
-            })
+    jwt.verify(tokenWithoutBearar, SECRET_KEY, (error, decoded) => {
+        if(error) {
+            return res.status(401).json({status: 401, message: "Authentication failed - missing token"})
         }
-        // attach the decoded token to the request object
-        req.decoded = decoded;
-        // continue with the request
-        next();
-    });
+
+        req.decoded = decoded
+
+        next()
+    })
+
 }
 
-export default authenticate;
+export default authenticate
